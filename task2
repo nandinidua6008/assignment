@@ -1,0 +1,216 @@
+ques 1) What is module and using module achieve multiple inheritance in ruby.
+
+solution 1:
+A Module is a collection of methods, constants, and class variables. Modules are defined as a class, but with the module keyword not with class keyword.
+
+Important Points about Modules:
+
+You cannot inherit modules or you can’t create a subclass of a module.
+Objects cannot be created from a module.
+Modules are used as namespaces and as mixins.
+All the classes are modules, but all the modules are not classes.
+The class can use namespaces, but they cannot use mixins like modules.
+The name of a module must start with a capital letter.
+
+example:
+module Maths
+    @a=10
+    @b=20
+    def Maths.add
+        print"#{@a} + #{@b} = ", @a+@b,"\n"
+    end 
+    
+    def Maths.substract
+     
+        print"#{@a} - #{@b} = ", @a-@b,"\n"
+    end 
+    
+    def Maths.multiplication
+       
+        print"#{@a} * #{@b} = ", @a*@b,"\n"
+    end 
+    
+    def Maths.division
+        print"#{@a} / #{@b} = ", @a/@b
+    end 
+end 
+Maths.add
+Maths.substract
+Maths.multiplication
+Maths.division
+
+example 2: using module achieve multiple inheritance
+
+module Postgraduation
+
+  def my_method
+    puts "#{self.class} can be a Postgraduation student"
+  end
+
+end
+
+module Graduation
+
+  def method_2
+    puts "#{self.class} can be a graduation student"
+  end
+
+end
+
+
+class Student
+  include Postgraduation
+  include Graduation
+
+  def method_3
+    puts "hey, I am nandini"
+  end
+
+end
+Student.new.method_3 
+Student.new.method_2 
+Student.new.my_method 
+
+ques 2) What is module mixin in ruby. Explain with good example.
+
+solution 2:
+Ruby does not support multiple inheritance directly but Ruby Modules have another wonderful use. At a stroke, they pretty much eliminate the need for multiple inheritance, providing a facility called a mixin.
+
+Mixins give you a wonderfully controlled way of adding functionality to classes. However, their true power comes out when the code in the mixin starts to interact with code in the class that uses it.
+
+example:
+
+module A
+def A.a1 # prefix with the module name for a class method
+puts "a1"
+end
+def a2 # an instance method, mixin for other classes
+puts "a2"
+end
+end
+module B
+def a1
+puts "b1"
+end
+def b2
+puts "b2"
+end
+end
+
+class Sample
+include A
+include B
+def s1
+puts "s1"
+end
+end
+
+samp = Sample.new
+A.a1
+samp.a2
+samp.a1
+samp.b2
+samp.s1
+
+ques 3) What is class method and class variable, explain with an example
+
+solution 3:
+class method: A class method provides functionality to a class itself.
+
+Syntax :
+
+def class_name.class_method_name or self.class_method_name
+  # some code
+end
+
+Here, we can access the above method there is no need to create objects of the Class as we can directly access it.
+Here, the self keyword refers to the entire class itself, not to an instance of the class. In this case, we are inside the class only, not inside an instance method of that class. So, we are in the class scope.
+
+
+
+example: class method
+
+class SayHello
+  def self.from_the_class
+    puts "Hello, from a class method"
+  end
+end
+SayHello.from_the_class
+
+class variables: A class variable is a variable that is shared amongst all instances of a class. This means that only one variable value exists for all objects instantiated from this class. This means that if one object instance changes the value of the variable, that new value will essentially change for all other object instances.
+Another way of thinking of thinking of class variables is as global variables within the context of a single class.
+Class variables must be initialized at creation time.
+
+syntax:
+@@varible_name=value
+
+example 1: class variable
+
+class SayHello
+    @@hii=0
+  def self.from_the_class
+    puts "Hello, from a class method"
+     puts @@hii
+    @@hii=@@hii+1
+    
+  end
+end
+SayHello.from_the_class
+SayHello.from_the_class
+SayHello.from_the_class
+
+example 2: class variable
+
+class SayHello
+    @@hii=0
+  def count
+    @@hii=@@hii+1
+  end
+  def display
+      puts @@hii
+end
+end
+ob1=SayHello.new()
+ob2=SayHello.new()
+
+
+ob1.count
+ob2.count
+
+ob1.count
+
+ob1.display
+ob2.display
+
+ques 4) What is instance method and instance variable, explain with an example.
+
+solution:
+Instance variables are similar to Class variables except that their values are local to specific instances of an object. For example if a class contains an instance variable called @total, if one instance of the object changes the current value of @total the change is local to only the object that made the change. Other objects of the same class have their own local copies of the variable which are independent of changes made in any other objects.
+Instance variables are declared in Ruby by prefixing the variable name with a single @ sign
+
+syntax:
+@instance_variable_name= value
+
+An instance method provides functionality to one instance of a class.
+example:
+
+class Abc
+  def initialize(x)
+    @water = x   #instance variable
+  end
+  def print_water #instance method
+      @water-=10
+    puts "Water Level: #{@water}"
+  end
+  
+end
+ob=Abc.new(100)
+ob1=Abc.new(200)
+
+ob.print_water
+ob.print_water
+
+ob1.print_water
+ob1.print_water
+
+
