@@ -1,0 +1,305 @@
+ques 1. Explain with an example the use of Private, Protected, and Public methods.
+
+solution:
+Public methods: Public methods can be called by everyone - no access control is enforced. A class's instance methods (these do not belong only to one object; instead, every instance of the class can call them) are public by default; anyone can call them.
+
+example:
+class Display
+    def show 
+        puts "Display class has Show public method"
+    end
+end
+ob=Display.new()
+ob.show()
+
+Private methods: Private methods cannot be called with an explicit receiver - the receiver is always self. This means that private methods can be called only in the context of the current object; you cannot invoke another object's private methods.The initialize method is always private
+
+example:
+class User
+
+  def hi
+    "hi"
+  end
+
+  def hello
+    "hello"
+  end
+
+  private
+
+  def secret
+    "secret"
+  end
+
+  def internal
+    "internal"
+  end
+end
+
+u = User.new
+u.hi # => "hi"
+u.hello # => "hello"
+u.secret # => error: private method `secret' called
+u.internal # => error: private method `internal' called
+
+example 2: Private methods can not be used from outside, but we still can use it inside a class:
+class Person
+  def legs
+    puts "Hey, i have 2 legs"
+  end
+  def hands_person
+    hands
+  end 
+
+  private 
+  def hands
+    puts "Hey, i jave 2 hands" 
+    a=10 
+    b=20 
+    print "sum of #{a} and #{b} is " ,a+b,"\n"
+  end 
+end
+you = Person.new 
+you.legs #Hey, i have 2 legs
+
+me=Person.new
+me.legs #Hey , i have 2 legs
+me.hands_person #Hey, i have 2 hands
+me.hands #error
+
+Protected methods : Protected methods can be invoked only by objects of the defining class and its subclasses. Access is kept within the family. However, usage of protected is limited.
+
+example 1:
+class Person  
+  def initialize(age)  
+    @age = age  
+    puts @age
+  end  
+  def age  
+    @age  
+  end  
+  def compare_age(c)  
+    if c.age > age  
+      "The other object's age is bigger."  
+    else  
+      "The other object's age is the same or smaller."  
+    end  
+  end  
+  protected :age  
+end  
+  
+nandini = Person.new(25)  
+anjali = Person.new(34)  
+puts nandini.compare_age(anjali)  
+nandini.age  
+
+ques 2. What are Accessor Methods? Explain with an example. 
+
+solution
+In a Ruby class we may want to expose the instance variables (the variables that are defined prefixed by @ symbol) to other classes for encapsulation. Then, in that case, we use the getter and setter methods.Ruby provides us with a quick way to generate the getter and setter methods without explicitly writing them.These methods are known as accessor methods.
+There are three types of accessors in Ruby
+
+attr_reader : This accessor generates the automatic Getter method for the given item.
+attr_writer : This accessor generates the automatic Setter method for the given item.
+attr_accessor : This accessor generates the automatic Getter & Setter method for the given item.
+
+example 1: attr_reader example
+
+class Person
+    attr_reader :name
+    def initialize (name)
+        @name=name
+    end 
+end 
+ob=Person.new("nandini")
+puts ob.name
+
+example 2: attr_writer example
+
+class Person
+    attr_reader :name
+    attr_writer :name
+    def initialize (name)
+        @name=name
+    end 
+end 
+ob=Person.new("nandini")
+puts ob.name
+ob.name="isha"
+puts ob.name
+
+example 3: attr_accessor
+
+class Person
+    attr_accessor :name
+    def initialize (name)
+        @name=name
+    end 
+end 
+ob=Person.new("nandini")
+puts ob.name
+ob.name="isha"
+puts ob.name
+
+ques 3. What are Constants? Explain with an example.
+
+solution:
+A Ruby constant is like a variable, except that its value is supposed to remain constant for the duration of the program. The Ruby interpreter does not actually enforce the constancy of constants, but it does issue a warning if a program changes the value of a constant.
+
+example 1:
+A = 10
+B = A
+A = 10+2   
+puts A 
+puts B
+A = 10-2
+puts B
+
+Note:
+
+Constants defined within a class or module may be accessed anywhere within the class or module.
+Outside the class or module, they may be accessed using the scope operator, :: prefixed by an expression that returns the appropriate class or module.
+Constants defined outside any class or module may be accessed as it is or by using the scope operator with no prefix.
+Constants may not be defined in methods.
+Constants may be added to existing classes and modules from the outside by using the class or module name and the scope operator before the constant name.
+
+example 2:
+OUTER_CONST = 99  
+  
+class Const  
+    def get_const  
+      puts CONST  
+    end  
+    CONST = OUTER_CONST + 1  
+end  
+  
+ob =Const.new
+ob.get_const
+
+puts Const::CONST
+
+puts ::OUTER_CONST  
+puts Const::NEW_CONST = 123  
+
+ques 4. What is the role of super keyword? Explain with an example. 
+
+solution :
+Ruby uses the super keyword to call the superclass implementation of the current method. Within the body of a method, calls to super acts just like a call to that original method. The search for a method body starts in the superclass of the object that was found to contain the original method.
+
+example:
+class Father
+  def name
+    puts "Father's name: Mahesh Dua"
+  end
+end
+class Daughter < Father
+  def name
+    super
+    puts "Daugther's name : Nandini Dua"
+  end
+end
+name = Daughter.new
+name.name
+
+ques 5. Difference between method overloading and method overriding in ruby? Explain with an example.
+
+solution. 
+Method overloading: Method overloading is a feature that allows a class to have more than one method with same name but different method signature ie. different number of arguments, order of arguments and different types of parameters.Method overloading is a feature of statically typed language in which binding of methods takes place during compile time. But Ruby being a dynamically typed language, it does not support static binding at all.
+A possible approach to implement overloading in Ruby can be by varying the number of arguments of the method. However, overloading methods using different types of arguments is possible but it becomes really difficult to keep a trace of the code.
+
+example 1: Using Class Methods
+
+class Sum
+    def initialize (*args)
+        size=args.size 
+        case size
+            when 1 
+                puts size
+            when 2 
+               puts args[0]+args[1]
+            when 3
+                puts args[0]+args[1]+args[2]
+            when 4
+                puts args[0]+args[1]+args[2]
+            else 
+                puts "wrong"
+        end
+    end 
+end 
+s=Sum.new(1,2,3,4,5)
+
+example 2: Using Instance Methods
+class Multiply
+    def display (*args)
+        size=args.size 
+        case size
+            when 1 
+                puts size
+            when 2 
+               puts args[0]*args[1]
+            when 3
+                puts args[0]*args[1]*args[2]
+            when 4
+                puts args[0]*args[1]*args[2]
+            else 
+                puts "wrong"
+        end
+    end 
+end 
+s=Multiply.new
+s.display(5,4)
+
+Method overriding: Method overriding, in object oriented programming, is a language feature that allows a subclass to provide a specific implementation of a method that is already provided by one of its superclasses. The implementation in the subclass overrides (replaces) the implementation in the superclass.
+
+example:
+class A  
+  def a  
+    puts 'In class A'  
+  end  
+end  
+  
+class B < A  
+  def a  
+    puts 'In class B'  
+  end  
+end  
+  
+b = B.new  
+b.a  
+
+ques 6. What is the use of self? Explain at least its two use.
+
+solution. The keyword self in Ruby gives you access to the current object – the object that is receiving the current message.
+
+uses:
+
+1.the self keyword refers to the entire class itself, not to an instance of the class. In this case, we are inside the class only, not inside an instance method of that class. So, we are in the class scope.
+
+example: class method
+
+class SayHello
+  def self.from_the_class
+    puts "Hello, from a class method"
+  end
+end
+SayHello.from_the_class
+
+2.Disambiguation: 
+example:
+class Post
+  attr_accessor :title
+
+  def replace_title(new_title)
+    self.title = new_title
+  end
+
+  def print_title
+    puts title
+  end
+end
+
+pst = Post.new
+pst.title = "Cream of Broccoli"
+pst.replace_title("Cream of Spinach")
+pst.print_title
+# "Cream of Broccoli"
